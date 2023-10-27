@@ -9,7 +9,9 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
-
+from langchain.llms import LlamaCpp
+from langchain.callbacks.manager import CallbackManager
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
@@ -22,8 +24,8 @@ def get_pdf_text(pdf_docs):
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
         separator="\n",
-        chunk_size=1000,
-        chunk_overlap=200,
+        chunk_size=50,
+        chunk_overlap=10,
         length_function=len
     )
     chunks = text_splitter.split_text(text)
@@ -31,16 +33,20 @@ def get_text_chunks(text):
 
 
 def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings()
-    # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
+    #embeddings = OpenAIEmbeddings()
+    embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
 
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI()
-    # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
-
+    #llm = ChatOpenAI()
+    #llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
+    llm = LlamaCpp(
+    model_path="/media/anton/10bc98b6-5387-4b20-8ab7-624f1cf8c462/llama2/llama.cpp/models/llama2-q8.gguf",
+    n_gpu_layers=212,
+    n_ctx=1700,
+)
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
