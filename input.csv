@@ -1,0 +1,7 @@
+Name,Surname,Title,Industry,Location,"Transaction type",Amount,Currency,Beneficiary Name,Beneficiary Surname,Account Number,Beneficiary Currency,Value Date
+John,Doe,Manager,Technology,New York,Payment,5000,USD,Alice,Smith,123456789,USD,2024-02-23
+Emily,Johnson,CEO,Finance,London,Transfer,7500,GBP,James,Miller,987654321,GBP,2024-02-23
+Michael,Smith,Analyst,Healthcare,San Francisco,Deposit,12000,USD,Olivia,Jones,456789012,EUR,2024-02-24
+Sarah,Williams,Engineer,Manufacturing,Tokyo,Withdrawal,3000,JPY,David,Brown,789012345,JPY,2024-02-24
+Daniel,Baker,Consultant,Consulting,Berlin,Payment,6000,EUR,Emma,Anderson,234567890,EUR,2024-02-25
+
